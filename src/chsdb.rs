@@ -7,7 +7,7 @@ macro_rules! chsdb {
         {
             let mut tmp_chsdb: DB<$valuety, $keyty> = DB::new();
 
-            tmp_chsdb.put($key, $value);
+            tmp_chsdb.put($key, $value).expect("Failed put key or value");
 
             tmp_chsdb
         }
@@ -25,7 +25,7 @@ pub fn db() -> std::io::Result<usize> {
     todo!();
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DB<T = String, K = String> {
     pub path: String,
     pub db: usize,

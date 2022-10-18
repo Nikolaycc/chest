@@ -7,7 +7,7 @@ macro_rules! chsdb {
         {
             let mut tmp_chsdb: DB<$valuety, $keyty> = DB::new();
 
-            tmp_chsdb.put($key, $value);
+            tmp_chsdb.put($key, $value).expect("Failed put key or value");
 
             tmp_chsdb
         }
@@ -25,7 +25,7 @@ pub fn db() -> std::io::Result<usize> {
     todo!();
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DB<T = String, K = String> {
     pub path: String,
     pub db: usize,
@@ -35,18 +35,18 @@ pub struct DB<T = String, K = String> {
 
 // impl<T: Default, K: Default> Copy for DB<T, K> { }
 
-//impl<T: Default, K: Default> Clone for DB<T, K> {
-    fn clone(&self) -> DB {
-        DB {
-            path: self.path.clone(),
-            db: self.db,
-            values: self.values.clone(),
-            keys: self.keys.clone(),
-        }
-    }
-}
+// impl<T: Default, K: Default> Clone for DB<T, K> {
+//     fn clone(&self) -> DB {
+//         DB {
+//             path: self.path.clone(),
+//             db: self.db,
+//             values: self.values.clone(),
+//             keys: self.keys.clone(),
+//         }
+//     }
+// }
 
-impl<T: Default, K: Default> DB<T, K> {
+impl<T: Default + Clone, K: Default + std::cmp::PartialEq> DB<T, K> {
     pub fn new() -> Self {
         Self {
             path: String::new(),
@@ -56,6 +56,7 @@ impl<T: Default, K: Default> DB<T, K> {
         }
     }
 
+
     pub fn put(&mut self, key: K, val: T) -> std::io::Result<()> {
         self.keys.push(key);
         self.values.push(val);
@@ -64,8 +65,8 @@ impl<T: Default, K: Default> DB<T, K> {
     }
 
     pub fn get(&self, key: K) -> std::io::Result<T> {
-        let index = self.keys.iter().position(|&r| stringify!(r) == stringify!(key)).expect("Not Found Key");
+        let index = self.keys.iter().position(|r| r == &key).unwrap();
 
-        Ok(self.values[index])
+        Ok(self.values[index].clone())
     }
 }

@@ -19,9 +19,8 @@ fn example() -> () {
     db.put("hello", "world");
     db.put("ayep", "mommy");
     db.put("fuck", "you");
-    db.put("hello", "ajameti");
 
-    print!("{:?}\n{}\n{}\n", db, db.get("hello").unwrap(), db.get("fuck").unwrap());
+    print!("{:?}\n{}\n{}\n", db, db.get("ayep").unwrap(), db.get("fuck").unwrap());
 }
 
 
