@@ -56,6 +56,7 @@ impl<T: Default + Clone, K: Default + std::cmp::PartialEq> DB<T, K> {
         }
     }
 
+
     pub fn put(&mut self, key: K, val: T) -> std::io::Result<()> {
         self.keys.push(key);
         self.values.push(val);
