@@ -25,7 +25,7 @@ pub fn db() -> std::io::Result<usize> {
     todo!();
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct DB<T = String, K = String> {
     pub path: String,
     pub db: usize,
@@ -35,18 +35,18 @@ pub struct DB<T = String, K = String> {
 
 // impl<T: Default, K: Default> Copy for DB<T, K> { }
 
-// impl<T: Default, K: Default> Clone for DB<T, K> {
-//     fn clone(&self) -> DB {
-//         DB {
-//             path: self.path.clone(),
-//             db: self.db,
-//             values: self.values.clone(),
-//             keys: self.keys.clone(),
-//         }
-//     }
-// }
+//impl<T: Default, K: Default> Clone for DB<T, K> {
+    fn clone(&self) -> DB {
+        DB {
+            path: self.path.clone(),
+            db: self.db,
+            values: self.values.clone(),
+            keys: self.keys.clone(),
+        }
+    }
+}
 
-impl<T: Default + Clone, K: Default + std::cmp::PartialEq> DB<T, K> {
+impl<T: Default, K: Default> DB<T, K> {
     pub fn new() -> Self {
         Self {
             path: String::new(),
@@ -64,8 +64,8 @@ impl<T: Default + Clone, K: Default + std::cmp::PartialEq> DB<T, K> {
     }
 
     pub fn get(&self, key: K) -> std::io::Result<T> {
-        let index = self.keys.iter().position(|r| r == &key).unwrap();
+        let index = self.keys.iter().position(|&r| stringify!(r) == stringify!(key)).expect("Not Found Key");
 
-        Ok(self.values[index].clone())
+        Ok(self.values[index])
     }
 }

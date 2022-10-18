@@ -15,8 +15,8 @@ fn main() {
     // db();
 
     let n1: DB<String, usize> = DB {
-        path: Some("Hello World".to_owned()),
-        db: Some(2424),
+        path: "Hello World".to_owned(),
+        db: 2424,
         values: vec![s!("Data"), s!("Data2")],
         keys: vec![24, 23, 54],
     };
@@ -31,5 +31,7 @@ fn main() {
 
     n4.put(s!("key4"), s!("value4"));
 
-    print!("{:?}\n{:?}\n{:?}\n{:?}\n{:?}\n{:?}\n", n1, n2, n3, n4, n5, n6);
+    let val: String = n4.get(s!("key4")).unwrap();
+
+    print!("{:?}\n{:?}\n{:?}\n{:?}\n{:?}\n{:?}\n{}\n", n1, n2, n3, n4, n5, n6, val);
 }
