@@ -12,20 +12,19 @@ fn run_process() -> io::Result<()> {
     todo!();
 }
 
-
 fn example() -> () {
-    // N1
+    // 1. Create DB & Put (key => value)
     let mut db: DB<&str, &str> = DB::new();
-    db.put("hello", "world");
-    db.put("ayep", "mommy");
-    db.put("fuck", "you");
-    db.put("hello", "ajameti");
+    db.put("hello", "world").unwrap();
+    db.put("ayep", "mommy").unwrap();
+    db.put("fuck", "you").unwrap();
+    db.put("hello", "ajameti").unwrap();
 
-    print!("{:?}\n{}\n{}\n", db, db.get("hello").unwrap(), db.get("fuck").unwrap());
+    print!("{:?}\n{}\n{}\n{}\n", db, db.get("hello").unwrap(), db.get("fuck").unwrap(), db.len().unwrap());
 }
 
 
 fn main() {
-    // call example
+    // call example code
     example();
 }

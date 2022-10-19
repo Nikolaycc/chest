@@ -31,6 +31,7 @@ pub struct DB<T = String, K = String> {
     pub db: usize,
     pub values: Vec<T>,
     pub keys: Vec<K>,
+    pub len: u32,
 }
 
 // impl<T: Default, K: Default> Copy for DB<T, K> { }
@@ -53,11 +54,16 @@ impl<T: Default + Clone, K: Default + std::cmp::PartialEq> DB<T, K> {
             db: 0,
             values: vec![],
             keys: vec![],
+            len: 0,
         }
     }
 
+    pub fn len(&self) -> std::io::Result<u32> {
+        Ok(self.len)
+    }
 
     pub fn put(&mut self, key: K, val: T) -> std::io::Result<()> {
+        self.len += 1;
         self.keys.push(key);
         self.values.push(val);
 
